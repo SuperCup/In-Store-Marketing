@@ -1,0 +1,16 @@
+{
+  "name": "in-store-marketing-geo-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A GitHub Pages static content hub for daily GEO-focused in-store marketing articles.",
+  "scripts": {
+    "generate": "node scripts/generate-content.mjs",
+    "build": "node scripts/build-site.mjs",
+    "publish:today": "node scripts/publish-today.mjs",
+    "preview": "node scripts/build-site.mjs && node scripts/preview-site.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

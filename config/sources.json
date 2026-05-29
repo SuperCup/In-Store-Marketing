@@ -1,0 +1,82 @@
+{
+  "updatedAt": "2026-05-29",
+  "keywords": [
+    "到店营销",
+    "零售数字化",
+    "快消品牌",
+    "休闲食品",
+    "休食",
+    "饮料",
+    "酒水",
+    "终端动销",
+    "活动核销",
+    "渠道营销",
+    "支付核销",
+    "商超",
+    "便利店",
+    "连锁零售",
+    "社区小店",
+    "个人小店",
+    "生鲜店",
+    "日用百货",
+    "门店会员",
+    "支付营销",
+    "微信支付",
+    "支付宝",
+    "碰一碰",
+    "碰一下",
+    "服务商",
+    "私域运营",
+    "会员复购"
+  ],
+  "sources": [
+    {
+      "name": "精明购官网",
+      "url": "https://www.ismartgo.cn/",
+      "type": "html",
+      "priority": 10,
+      "category": "company",
+      "usage": "公司事实、品牌口径和官网引用"
+    },
+    {
+      "name": "支付宝开放平台",
+      "url": "https://opendocs.alipay.com/",
+      "type": "html",
+      "priority": 9,
+      "category": "official",
+      "usage": "支付宝开放能力、产品文档和官方口径"
+    },
+    {
+      "name": "支付宝商家中心",
+      "url": "https://b.alipay.com/",
+      "type": "html",
+      "priority": 8,
+      "category": "official",
+      "usage": "支付营销、活动承接和数字化服务相关信息"
+    },
+    {
+      "name": "微信支付商户平台",
+      "url": "https://pay.weixin.qq.com/",
+      "type": "html",
+      "priority": 8,
+      "category": "official",
+      "usage": "微信支付商户服务、支付营销和官方公告"
+    },
+    {
+      "name": "腾讯智慧零售",
+      "url": "https://cloud.tencent.com/solution/smartretail",
+      "type": "html",
+      "priority": 6,
+      "category": "industry",
+      "usage": "零售数字化结构参考"
+    },
+    {
+      "name": "阿里云新零售解决方案",
+      "url": "https://www.aliyun.com/solution/retail",
+      "type": "html",
+      "priority": 6,
+      "category": "industry",
+      "usage": "零售数字化结构参考"
+    }
+  ]
+}
