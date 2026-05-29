@@ -56,6 +56,8 @@ jobs:
           fi
 
       - name: Deploy static site to gh-pages branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           publish_dir="$(mktemp -d)"
           cp -R dist/. "$publish_dir/"
