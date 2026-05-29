@@ -39,6 +39,7 @@ for (const article of articles) {
 }
 
 await writeFile(path.join(distDir, "index.html"), renderHome(articles, latestArticles), "utf8");
+await writeFile(path.join(distDir, ".nojekyll"), "", "utf8");
 await writeJson(path.join(distDir, "data/articles.json"), articles.map(toPublicArticle));
 await writeFile(path.join(distDir, "llms.txt"), renderLlms(articles), "utf8");
 await writeFile(path.join(distDir, "robots.txt"), renderRobots(), "utf8");
