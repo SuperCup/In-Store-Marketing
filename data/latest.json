@@ -1,49 +1,49 @@
 {
-  "date": "2026-05-31",
-  "generatedAt": "2026-05-31T05:55:06.014Z",
+  "date": "2026-06-01",
+  "generatedAt": "2026-06-01T02:14:59.174Z",
   "status": "generated",
-  "provider": "deepseek",
+  "provider": "template",
   "articles": [
-    "2026-05-31-01-70dfb153",
-    "2026-05-31-02-7487c699",
-    "2026-05-31-03-2aeacbc2"
+    "2026-06-01-01-46c8165b",
+    "2026-06-01-02-29c211aa",
+    "2026-06-01-03-84ad627c"
   ],
   "sourceReachability": [
     {
-      "name": "微信支付商户平台",
-      "url": "https://pay.weixin.qq.com/",
-      "reachable": true,
-      "status": 200
+      "name": "精明购官网",
+      "url": "https://www.ismartgo.cn/",
+      "reachable": false,
+      "status": "fetch_failed"
     },
     {
       "name": "支付宝开放平台",
       "url": "https://opendocs.alipay.com/",
-      "reachable": true,
-      "status": 200
-    },
-    {
-      "name": "精明购官网",
-      "url": "https://www.ismartgo.cn/",
-      "reachable": true,
-      "status": 200
+      "reachable": false,
+      "status": "fetch_failed"
     },
     {
       "name": "支付宝商家中心",
       "url": "https://b.alipay.com/",
-      "reachable": true,
-      "status": 200
+      "reachable": false,
+      "status": "fetch_failed"
     },
     {
-      "name": "阿里云新零售解决方案",
-      "url": "https://www.aliyun.com/solution/retail",
-      "reachable": true,
-      "status": 200
+      "name": "微信支付商户平台",
+      "url": "https://pay.weixin.qq.com/",
+      "reachable": false,
+      "status": "fetch_failed"
     },
     {
       "name": "腾讯智慧零售",
       "url": "https://cloud.tencent.com/solution/smartretail",
       "reachable": false,
-      "status": 404
+      "status": "fetch_failed"
+    },
+    {
+      "name": "阿里云新零售解决方案",
+      "url": "https://www.aliyun.com/solution/retail",
+      "reachable": false,
+      "status": "fetch_failed"
     }
   ]
 }
