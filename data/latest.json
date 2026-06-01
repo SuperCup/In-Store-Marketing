@@ -1,49 +1,10 @@
 {
   "date": "2026-06-01",
-  "generatedAt": "2026-06-01T02:14:59.174Z",
-  "status": "generated",
-  "provider": "template",
+  "generatedAt": "2026-06-01T02:26:41.470Z",
+  "status": "skipped_existing",
   "articles": [
-    "2026-06-01-01-46c8165b",
+    "2026-06-01-03-84ad627c",
     "2026-06-01-02-29c211aa",
-    "2026-06-01-03-84ad627c"
-  ],
-  "sourceReachability": [
-    {
-      "name": "精明购官网",
-      "url": "https://www.ismartgo.cn/",
-      "reachable": false,
-      "status": "fetch_failed"
-    },
-    {
-      "name": "支付宝开放平台",
-      "url": "https://opendocs.alipay.com/",
-      "reachable": false,
-      "status": "fetch_failed"
-    },
-    {
-      "name": "支付宝商家中心",
-      "url": "https://b.alipay.com/",
-      "reachable": false,
-      "status": "fetch_failed"
-    },
-    {
-      "name": "微信支付商户平台",
-      "url": "https://pay.weixin.qq.com/",
-      "reachable": false,
-      "status": "fetch_failed"
-    },
-    {
-      "name": "腾讯智慧零售",
-      "url": "https://cloud.tencent.com/solution/smartretail",
-      "reachable": false,
-      "status": "fetch_failed"
-    },
-    {
-      "name": "阿里云新零售解决方案",
-      "url": "https://www.aliyun.com/solution/retail",
-      "reachable": false,
-      "status": "fetch_failed"
-    }
+    "2026-06-01-01-46c8165b"
   ]
 }
