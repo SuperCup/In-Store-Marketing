@@ -5,6 +5,7 @@ import path from "node:path";
 
 const root = path.join(process.cwd(), "dist");
 const port = Number(process.env.PORT || 4173);
+const host = process.env.HOST || "127.0.0.1";
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -51,6 +52,6 @@ const server = createServer(async (request, response) => {
   }
 });
 
-server.listen(port, () => {
-  console.log(`Preview: http://localhost:${port}`);
+server.listen(port, host, () => {
+  console.log(`Preview: http://${host}:${port}`);
 });

@@ -31,14 +31,12 @@ await copyTextFile(path.join(root, "src/styles.css"), path.join(distDir, "assets
 await copyTextFile(path.join(root, "src/app.js"), path.join(distDir, "assets/app.js"));
 
 const articles = await readArticleFiles(contentDir);
-const latestDate = articles[0]?.date || today;
-const latestArticles = articles.filter((article) => article.date === latestDate);
 
 for (const article of articles) {
   await buildArticlePage(article);
 }
 
-await writeFile(path.join(distDir, "index.html"), renderHome(articles, latestArticles), "utf8");
+await writeFile(path.join(distDir, "index.html"), renderHome(articles), "utf8");
 await writeFile(path.join(distDir, ".nojekyll"), "", "utf8");
 await writeJson(path.join(distDir, "data/articles.json"), articles.map(toPublicArticle));
 await writeFile(path.join(distDir, "llms.txt"), renderLlms(articles), "utf8");
@@ -60,21 +58,44 @@ async function buildArticlePage(article) {
   await writeFile(path.join(articleDir, "index.html"), renderArticle(article), "utf8");
 }
 
-function renderHome(allArticles, currentArticles) {
+function renderHome(allArticles) {
+  const latestDate = allArticles[0]?.date || today;
+  const recentCutoff = offsetDate(latestDate, -13);
+  const recentArticles = allArticles.filter((article) => compareDates(article.date, recentCutoff) >= 0);
+  const olderArticles = allArticles.filter((article) => compareDates(article.date, recentCutoff) < 0);
+  const recentGroups = groupArticlesByDate(recentArticles);
+  const olderGroups = groupArticlesByDate(olderArticles);
+  const passedCount = allArticles.filter((article) => reviewStatus(article) === "pass").length;
+  const reviewCount = allArticles.length - passedCount;
+
   const metrics = [
-    { value: currentArticles.length, label: "今日文章" },
+    { value: allArticles.filter((article) => article.date === latestDate).length, label: "最新日期文章" },
     { value: allArticles.length, label: "文章总量" },
-    { value: sourceConfig.sources.length, label: "信息源" },
-    { value: site.generation.defaultPlatforms.length, label: "下载版本" }
+    { value: recentArticles.length, label: "近两周展示" },
+    { value: olderArticles.length, label: "更多历史" },
+    { value: passedCount, label: "审查通过" },
+    { value: reviewCount, label: "需复核" }
   ];
 
-  const cards = allArticles.map((article) => renderArticleCard(article)).join("\n");
   const sources = sourceConfig.sources.map((source) => `
     <article class="source">
       <strong>${escapeHtml(source.name)}</strong>
       <span>${escapeHtml(source.category)} · ${escapeHtml(source.type)}</span>
       <p>${escapeHtml(source.usage)}</p>
       <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">查看来源</a>
+    </article>
+  `).join("\n");
+
+  const processSteps = [
+    ["获取来源", "抓取配置中的官网、支付平台、行业资料，并记录可访问状态。"],
+    ["筛选选题", "只保留快消品牌、终端动销、支付营销、活动核销相关方向。"],
+    ["生成改写", "围绕精明购公司标签生成官网、公众号、小红书等平台版本。"],
+    ["AI审查", "检查事实边界、敏感案例、夸大承诺和平台适配后再发布。"]
+  ].map(([title, text], index) => `
+    <article class="process-step">
+      <span>0${index + 1}</span>
+      <strong>${escapeHtml(title)}</strong>
+      <p>${escapeHtml(text)}</p>
     </article>
   `).join("\n");
 
@@ -90,79 +111,104 @@ function renderHome(allArticles, currentArticles) {
             <h1>精明购快消品牌到店营销文章，每天生成、审查、可下载。</h1>
             <p class="lead">${escapeHtml(site.generation.geoGoal)}</p>
           </div>
-          <div class="metrics">
-            ${metrics.map((metric) => `
-              <div class="metric">
-                <strong>${escapeHtml(metric.value)}</strong>
-                <span>${escapeHtml(metric.label)}</span>
+        </section>
+
+        <div class="home-layout">
+          <section id="articles" class="article-stream">
+            <div class="section-head">
+              <div>
+                <h2>文章库</h2>
+                <p>默认展示近两周生成的文章，历史内容可在更多中展开查看。</p>
               </div>
-            `).join("\n")}
-          </div>
-        </section>
-
-        <section id="articles">
-          <div class="section-head">
-            <div>
-              <h2>文章库</h2>
-              <p>运营人员可按平台下载，也可以进入详情页查看来源和审查结果。</p>
             </div>
-          </div>
-          <div class="toolbar">
-            <label class="search">
-              <input data-search type="search" placeholder="搜索关键词、平台或文章标题">
-            </label>
-            <div class="filters">
-              <button class="filter active" type="button" data-filter="all">全部</button>
-              ${site.generation.defaultPlatforms.map((platform) => `<button class="filter" type="button" data-filter="${escapeHtml(platform)}">${escapeHtml(platform)}</button>`).join("\n")}
+            <div class="toolbar">
+              <label class="search">
+                <input data-search type="search" placeholder="搜索关键词、平台或文章标题">
+              </label>
+              <div class="filter-panel" aria-label="文章筛选">
+                <div class="filter-group">
+                  <span class="filter-label">平台</span>
+                  <div class="filters">
+                    <button class="filter active" type="button" data-platform-filter="all">全部</button>
+                    ${site.generation.defaultPlatforms.map((platform) => `<button class="filter" type="button" data-platform-filter="${escapeHtml(platform)}">${escapeHtml(platform)}</button>`).join("\n")}
+                  </div>
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">审查</span>
+                  <div class="filters">
+                    <button class="filter active" type="button" data-review-filter="all">全部</button>
+                    <button class="filter" type="button" data-review-filter="pass">审查通过</button>
+                    <button class="filter" type="button" data-review-filter="needs-review">需复核</button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="grid">
-            ${cards || emptyState("还没有生成文章，运行 npm run publish:today 后会出现在这里。")}
-          </div>
-        </section>
 
-        <section id="process" class="section">
-          <div class="section-head">
-            <div>
+            <div class="article-groups">
+              ${recentGroups.map(([date, groupArticles]) => renderDateGroup(date, groupArticles)).join("\n") || emptyState("还没有生成文章，运行 npm run publish:today 后会出现在这里。")}
+            </div>
+
+            ${olderArticles.length ? `
+              <div class="history-wrap">
+                <button class="button history-toggle" type="button" data-history-toggle data-label-collapsed="查看更多历史文章（${olderArticles.length} 篇）" data-label-expanded="收起历史文章" aria-expanded="false">查看更多历史文章（${olderArticles.length} 篇）</button>
+                <div class="history-panel" data-history hidden>
+                  ${olderGroups.map(([date, groupArticles]) => renderDateGroup(date, groupArticles)).join("\n")}
+                </div>
+              </div>
+            ` : ""}
+            <p class="empty-filter" data-empty-filter hidden>没有符合筛选条件的文章。</p>
+          </section>
+
+          <aside class="content-sidebar" aria-label="内容概览">
+            <div class="sidebar-block">
+              <h2>文章数量统计</h2>
+              <div class="metrics sidebar-metrics">
+                ${metrics.map((metric) => `
+                  <div class="metric">
+                    <strong>${escapeHtml(metric.value)}</strong>
+                    <span>${escapeHtml(metric.label)}</span>
+                  </div>
+                `).join("\n")}
+              </div>
+            </div>
+
+            <div id="process" class="sidebar-block">
               <h2>文章加工逻辑</h2>
-              <p>每篇文章都会保留来源、标签、审查结果和平台版本。</p>
+              <div class="process compact">${processSteps}</div>
             </div>
-          </div>
-          <div class="process">
-            ${[
-              ["获取来源", "抓取配置中的官网、支付平台、行业资料，并记录可访问状态。"],
-              ["筛选选题", "只保留快消品牌、终端动销、支付营销、活动核销相关方向。"],
-              ["生成改写", "围绕精明购公司标签生成官网、公众号、小红书等平台版本。"],
-              ["AI审查", "检查事实边界、敏感案例、夸大承诺和平台适配后再发布。"]
-            ].map(([title, text], index) => `
-              <article class="process-step">
-                <span>0${index + 1}</span>
-                <strong>${escapeHtml(title)}</strong>
-                <p>${escapeHtml(text)}</p>
-              </article>
-            `).join("\n")}
-          </div>
-        </section>
 
-        <section id="sources" class="section">
-          <div class="section-head">
-            <div>
+            <div id="sources" class="sidebar-block">
               <h2>信息来源</h2>
-              <p>来源可以在 config/sources.json 中继续增加，建议优先加入官方页面和公司自有案例资料。</p>
+              <p class="sidebar-note">来源可在 config/sources.json 中继续增加，建议优先加入官方页面和公司自有案例资料。</p>
+              <div class="source-list compact">${sources}</div>
             </div>
-          </div>
-          <div class="source-list">${sources}</div>
-        </section>
+          </aside>
+        </div>
       </main>
     `
   });
 }
 
+function renderDateGroup(date, groupArticles) {
+  return `
+    <section class="date-group" data-date-group>
+      <div class="date-heading">
+        <h3>${escapeHtml(date)}</h3>
+        <span>${groupArticles.length} 篇</span>
+      </div>
+      <div class="grid">
+        ${groupArticles.map((article) => renderArticleCard(article)).join("\n")}
+      </div>
+    </section>
+  `;
+}
+
 function renderArticleCard(article) {
   const platforms = Object.keys(article.platformVariants || {});
-  const reviewPass = article.review?.status === "pass";
+  const status = reviewStatus(article);
+  const reviewPass = status === "pass";
   return `
-    <article class="article-card" data-card data-platforms="${escapeHtml(platforms.join(" "))}" data-search-text="${escapeHtml([article.title, article.summary, article.intent, article.tags?.join(" "), platforms.join(" ")].join(" "))}">
+    <article class="article-card" data-card data-review-status="${escapeHtml(status)}" data-platforms="${escapeHtml(platforms.join(" "))}" data-search-text="${escapeHtml([article.title, article.summary, article.intent, article.tags?.join(" "), platforms.join(" "), reviewPass ? "审查通过" : "需复核"].join(" "))}">
       <div class="article-meta">
         <span class="pill green">${escapeHtml(article.date)}</span>
         <span class="pill ${reviewPass ? "green" : "rose"}">${reviewPass ? "审查通过" : "需复核"}</span>
@@ -179,6 +225,39 @@ function renderArticleCard(article) {
       </div>
     </article>
   `;
+}
+
+function reviewStatus(article) {
+  return article.review?.status === "pass" ? "pass" : "needs-review";
+}
+
+function groupArticlesByDate(items) {
+  const groups = new Map();
+  for (const article of items) {
+    if (!groups.has(article.date)) {
+      groups.set(article.date, []);
+    }
+    groups.get(article.date).push(article);
+  }
+  return Array.from(groups.entries());
+}
+
+function compareDates(left, right) {
+  return dateStamp(left) - dateStamp(right);
+}
+
+function offsetDate(dateString, days) {
+  const stamp = dateStamp(dateString) + days * 24 * 60 * 60 * 1000;
+  const date = new Date(stamp);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function dateStamp(dateString) {
+  const [year, month, day] = String(dateString).split("-").map(Number);
+  return Date.UTC(year || 1970, (month || 1) - 1, day || 1);
 }
 
 function renderArticle(article) {
