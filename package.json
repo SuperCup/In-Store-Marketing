@@ -8,6 +8,7 @@
     "generate": "node scripts/generate-content.mjs",
     "build": "node scripts/build-site.mjs",
     "publish:today": "node scripts/publish-today.mjs",
+    "notify:wecom": "node scripts/notify-wecom.mjs",
     "preview": "node scripts/build-site.mjs && node scripts/preview-site.mjs"
   },
   "engines": {
