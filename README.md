@@ -9,7 +9,6 @@
 - 支持 DeepSeek、Kimi 或其他 OpenAI-compatible 接口。
 - 没有配置 AI 密钥时，会使用保守模板生成，便于本地预览和流程验证。
 - 自动构建 GitHub Pages 静态站点。
-- 定时任务完成 GitHub Pages 部署后，可向企业微信群机器人推送每日文章概览。
 - 每篇文章生成多个可直接复制粘贴的纯文本下载版本：官网 SEO 版、公众号版、小红书版、头条搜狐版、知乎版、微博版。
 - 生成 `sitemap.xml`、`feed.xml`、`robots.txt`、`llms.txt`，帮助搜索引擎和 AI 应用理解公开内容资产。
 
@@ -27,19 +26,6 @@ npm run publish:today
 - `dist/`：可部署的静态网站。
 
 打开 `dist/index.html` 即可查看页面。
-
-本地预览当天企微消息内容：
-
-```bash
-npm run notify:wecom -- --dry-run
-```
-
-本地真实推送时，先把群机器人 webhook 放到环境变量：
-
-```bash
-export QYWX_WEBHOOK_URL="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..."
-npm run notify:wecom
-```
 
 ## 配置 AI
 
@@ -81,20 +67,9 @@ AI_REQUIRED=true
    - 可选：`DEEPSEEK_MODEL`、`KIMI_MODEL`
    - 可选：`AI_REQUIRED=true`
 
-## 企业微信每日推送
+## 自动任务
 
-企业微信机器人 webhook 不建议写进代码仓库。请在 GitHub 仓库中设置：
-
-1. 打开 `Settings -> Secrets and variables -> Actions`。
-2. 在 `Secrets` 中添加：
-   - `QYWX_WEBHOOK_URL`：企业微信群机器人 webhook 地址。
-3. 在 `Variables` 中可选添加：
-   - `SITE_PUBLIC_URL`：覆盖 `config/site.json` 中的 GitHub Pages 链接。
-   - `QYWX_NOTIFY_REQUIRED=true`：未配置 webhook 时让工作流失败，默认会跳过推送。
-
-定时任务和手动触发完成部署后，会向企微发送当天文章数量、审查状态、文章标题摘要、文章详情链接和 GitHub Pages 访问链接。普通 `push` 触发的构建不会发送企微消息，避免开发提交反复推送。
-
-自动任务位于 `.github/workflows/daily-content.yml`，默认每天北京时间 17:30 执行，也可以在 GitHub Actions 页面手动触发。
+自动任务位于 `.github/workflows/daily-content.yml`，默认每天北京时间 17:30 执行，也可以在 GitHub Actions 页面手动触发。任务只负责生成文章、提交内容并部署 GitHub Pages，不再向企业微信 webhook 推送消息。
 
 ## 信息来源维护
 

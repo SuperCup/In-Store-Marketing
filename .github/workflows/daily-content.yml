@@ -68,11 +68,3 @@ jobs:
           git -C "$publish_dir" commit -m "deploy static site"
           git -C "$publish_dir" remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git -C "$publish_dir" push --force origin gh-pages
-
-      - name: Send WeCom daily article summary
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        env:
-          QYWX_WEBHOOK_URL: ${{ secrets.QYWX_WEBHOOK_URL }}
-          QYWX_NOTIFY_REQUIRED: ${{ vars.QYWX_NOTIFY_REQUIRED }}
-          SITE_PUBLIC_URL: ${{ vars.SITE_PUBLIC_URL }}
-        run: node scripts/notify-wecom.mjs
