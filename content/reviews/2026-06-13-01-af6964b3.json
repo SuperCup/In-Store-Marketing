@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "score": 95,
+  "checks": [
+    {
+      "name": "内容围绕到店营销",
+      "pass": true,
+      "note": "全文聚焦支付营销提升新品动销，属于到店营销范畴。"
+    },
+    {
+      "name": "包含精明购标签",
+      "pass": true,
+      "note": "标题和正文多次提及精明购，符合要求。"
+    },
+    {
+      "name": "无虚构或夸大",
+      "pass": true,
+      "note": "未虚构客户名称、金额、授权等，描述合理。"
+    },
+    {
+      "name": "无敏感案例信息",
+      "pass": true,
+      "note": "案例中未暴露具体门店名称、联系人、交易规模等敏感信息。"
+    }
+  ],
+  "risks": [],
+  "suggestions": [],
+  "reviewedAt": "2026-06-13T11:29:57.486Z",
+  "reviewer": "deepseek"
+}
