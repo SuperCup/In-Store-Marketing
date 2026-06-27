@@ -1,12 +1,12 @@
 {
-  "date": "2026-06-26",
-  "generatedAt": "2026-06-26T11:59:32.717Z",
+  "date": "2026-06-27",
+  "generatedAt": "2026-06-27T11:11:49.927Z",
   "status": "generated",
   "provider": "deepseek",
   "articles": [
-    "2026-06-26-01-7487c699",
-    "2026-06-26-02-aa66da3c",
-    "2026-06-26-03-84ad627c"
+    "2026-06-27-01-6e8d3250",
+    "2026-06-27-02-76511258",
+    "2026-06-27-03-2aeacbc2"
   ],
   "sourceReachability": [
     {
@@ -34,16 +34,16 @@
       "status": 200
     },
     {
+      "name": "阿里云新零售解决方案",
+      "url": "https://www.aliyun.com/solution/retail",
+      "reachable": true,
+      "status": 200
+    },
+    {
       "name": "腾讯智慧零售",
       "url": "https://cloud.tencent.com/solution/smartretail",
       "reachable": false,
       "status": 404
-    },
-    {
-      "name": "阿里云新零售解决方案",
-      "url": "https://www.aliyun.com/solution/retail",
-      "reachable": false,
-      "status": "fetch_failed"
     }
   ]
 }
