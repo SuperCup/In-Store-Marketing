@@ -1,12 +1,12 @@
 {
-  "date": "2026-07-07",
-  "generatedAt": "2026-07-07T12:16:00.275Z",
+  "date": "2026-07-08",
+  "generatedAt": "2026-07-08T11:24:09.757Z",
   "status": "generated",
   "provider": "deepseek",
   "articles": [
-    "2026-07-07-01-aa66da3c",
-    "2026-07-07-02-29c211aa",
-    "2026-07-07-03-2aeacbc2"
+    "2026-07-08-01-70dfb153",
+    "2026-07-08-02-aa66da3c",
+    "2026-07-08-03-2aeacbc2"
   ],
   "sourceReachability": [
     {
