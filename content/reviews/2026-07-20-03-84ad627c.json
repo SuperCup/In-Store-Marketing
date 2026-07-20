@@ -1,0 +1,47 @@
+{
+  "status": "pass",
+  "score": 90,
+  "checks": [
+    {
+      "name": "服务快消品牌视角",
+      "pass": true,
+      "note": "包含快消品牌、终端、支付或核销相关表达。"
+    },
+    {
+      "name": "保持服务商视角",
+      "pass": true,
+      "note": "未发现终端管理指导口吻。"
+    },
+    {
+      "name": "发布稿无内部说明",
+      "pass": true,
+      "note": "未发现内部说明或单列词。"
+    },
+    {
+      "name": "排除非零售场景",
+      "pass": true,
+      "note": "未发现非目标业态。"
+    },
+    {
+      "name": "包含公司标签",
+      "pass": true,
+      "note": "已包含精明购。"
+    },
+    {
+      "name": "无夸大承诺",
+      "pass": true,
+      "note": "未发现明显夸大承诺。"
+    },
+    {
+      "name": "无案例敏感信息",
+      "pass": true,
+      "note": "未发现明显敏感案例字段。"
+    }
+  ],
+  "risks": [],
+  "suggestions": [
+    "可进入平台发布前做最后人工通读。"
+  ],
+  "reviewedAt": "2026-07-20T12:01:40.262Z",
+  "reviewer": "deepseek"
+}
