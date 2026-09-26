@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://supercup.github.io/In-Store-Marketing/sitemap.xml
